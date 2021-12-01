@@ -1,0 +1,25 @@
+﻿@page
+@model DomainEvents.Pages.Tickets.OpenTicketModel
+@{
+}
+
+
+
+<div>@ViewData["Message"]</div>
+
+
+<form method="post">
+
+    <div asp-validation-summary="All"></div>
+
+    <label>Konu :</label>
+    <input asp-for="InputModel.Subject" placeholder="Subject" />
+    <br />
+    <label>Açıklama:</label>
+    <textarea rows="10" cols="100" asp-for="InputModel.Description"></textarea>
+    <br />
+    <label>Müşteri:</label>
+    <select asp-for="InputModel.CustomerName" asp-items="@Model.Customers"></select>
+    <br />
+    <input type="submit" value="Open Ticket" asp-page-handler="OpenTicket" />
+</form>

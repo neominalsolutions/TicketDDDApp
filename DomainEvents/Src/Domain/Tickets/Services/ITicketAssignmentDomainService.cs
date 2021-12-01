@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DomainEvents.Src.Domain.Task.Services
+namespace DomainEvents.Src.Domain.Tickets.Services
 {
     /// <summary>
     /// Çalışana ticket atama işlemi yaparken belirli iş kurallarını kontrol etmek için açtığımız servis

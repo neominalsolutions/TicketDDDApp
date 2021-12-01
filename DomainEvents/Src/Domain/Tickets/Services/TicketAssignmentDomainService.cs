@@ -1,12 +1,12 @@
-﻿using DomainEvents.Src.Domain.Task.Entities;
-using DomainEvents.Src.Domain.Task.Repositories;
+﻿using DomainEvents.Src.Domain.Tickets.Entities;
+using DomainEvents.Src.Domain.Tickets.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace DomainEvents.Src.Domain.Task.Services
+namespace DomainEvents.Src.Domain.Tickets.Services
 {
     public class TicketAssignmentDomainService : ITicketAssignmentDomainService
     {
@@ -22,36 +22,40 @@ namespace DomainEvents.Src.Domain.Task.Services
         public void Assign(string ticketNumber, string assignedTo)
         {
 
-            Func<Ticket, bool> monthlyFilter =
+            // çalışana atanmış aylık ticketların filter.
+            Expression<Func<Ticket, bool>> monthlyFilter =
                 (x => x.AssignedTo == assignedTo
                 &&
                 x.CurrentDate <= DateTime.Now.AddMonths(1));
 
+
+  
+
             var ticket = _ticketRepository.Find(ticketNumber);
 
-            var assignedHardLevelTickets = _ticketRepository
+            // aylık zorluk derecesine göre atanmış taskların adetini bul
+            var assignedHardLevelTicketCounts = _ticketRepository
+                .Where(monthlyFilter)
                 .Where(x =>
                 (
                     x.LevelOfDifficulty == (int)TicketDifficultyLevels.Hard
-                    || 
+                    ||
                     x.LevelOfDifficulty == (int)TicketDifficultyLevels.Extreme
-                ))
-                .Where(monthlyFilter).ToList();
+                )).Count();
 
-            var monthlyAssignedTasks = _ticketRepository.Where(
-                x => x.AssignedTo == assignedTo
-                &&
-                x.CurrentDate <= DateTime.Now.AddMonths(1)
-                );
 
+            // tanımlı kişiye atanmış olan aylık 
             // aylık atanmış işler içerisindende zorluk derecesine göre hesaplama yaptık. 5 zorluk derecesine sahip bir iş 5 günlük bir iştir.
-            var monthlyWorkingHours = monthlyAssignedTasks.Sum(x => x.LevelOfDifficulty * 8);
+            var monthlyWorkingHours = _ticketRepository.Where(monthlyFilter).Sum(x => x.LevelOfDifficulty * 8);
+
+            
+          
 
             var assignedTasksByLevelOfPriorityCount = _ticketRepository
-                .Where(
-                    x => x.LevelOfPriority == (int)TicketPriorityLevels.Critical
-                )
                 .Where(monthlyFilter)
+                .Where(
+                 x => (x.LevelOfPriority == (int)TicketPriorityLevels.Critical)
+                )
                 .Count();
                 
 
@@ -68,7 +72,7 @@ namespace DomainEvents.Src.Domain.Task.Services
                 throw new Exception("Ticket atamak için uygun değildir.");
             }
 
-            if (assignedHardLevelTickets.Count >= 3 || monthlyWorkingHours > 160)
+            if (assignedHardLevelTicketCounts >= 3 || monthlyWorkingHours > 160)
             {
                 throw new Exception("çalışana bu ay içerisinde çok fazla iş yüklendi");
             }

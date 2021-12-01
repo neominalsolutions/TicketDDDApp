@@ -18,7 +18,7 @@ namespace DomainEvents.Src.SeedWork
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        List<TEntity> Where(Expression<Func<TEntity, bool>> expression);
+        IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
         List<TEntity> List();
 
         /// <summary>

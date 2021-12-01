@@ -1,0 +1,26 @@
+﻿@page
+@model DomainEvents.Pages.Tickets.OpenTicketsModel
+@{
+}
+
+<table>
+    <tr>
+        <th>Konu</th>
+        <th>Açıklama</th>
+        <th>Açılış Tarihi</th>
+    </tr>
+    @foreach (var item in Model.OpenTickets)
+    {
+        <tr>
+            <td>@item.Subject</td>
+            <td>@item.Description</td>
+            <td>@item.OpenDate.ToShortDateString()</td>
+            <td>
+                <a asp-page="SetTechDetail" asp-route-id="@item.Key">
+                    Set Tech Detail
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>

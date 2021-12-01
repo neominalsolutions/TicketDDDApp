@@ -12,9 +12,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MediatR;
-using DomainEvents.Src.Domain.Task.Entities;
+using DomainEvents.Src.Domain.Tickets.Entities;
 using DomainEvents.Src.SeedWork;
 using DomainEvents.Src.EFCore;
+using DomainEvents.Src.Domain.Tickets.Repositories;
+using DomainEvents.Src.EFCore.Repositories;
+using DomainEvents.Src.Domain.Tickets.Services;
+using DomainEvents.Src.Infrastructure.Email;
+using DomainEvents.Src.Infrastructure.Email.NetSmtp;
 
 namespace DomainEvents
 {
@@ -23,10 +28,6 @@ namespace DomainEvents
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Ticket t = new Ticket("Konu-1", "Hk", "32234324");
-            t.OpenTicket("test@test.com", "Mustafa");
-            t.OpenTicket("test@test.com", "Mustafa", "ali@test.com");
-
         }
 
         public IConfiguration Configuration { get; }
@@ -35,13 +36,18 @@ namespace DomainEvents
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddDbContext<TaskContext>(opt =>
+            services.AddDbContext<TicketContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddTransient<IDomainEventDispatcher, MediatrDomainEventDispatcher>();
             services.AddMediatR(typeof(Startup));
+
+            services.AddScoped<ITicketRepository, EFTicketRepository>();
+            services.AddScoped<ITicketAssignmentDomainService, TicketAssignmentDomainService>();
+
+            services.AddSingleton<IEmailSender, NetSmptMailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

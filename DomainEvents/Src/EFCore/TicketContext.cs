@@ -1,4 +1,5 @@
-﻿using DomainEvents.Src.SeedWork;
+﻿using DomainEvents.Src.Domain.Tickets.Entities;
+using DomainEvents.Src.SeedWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,17 +10,20 @@ using System.Threading.Tasks;
 
 namespace DomainEvents.Src.EFCore
 {
-    public class TaskContext: DbContext
+    public class TicketContext: DbContext
     {
         // IDomainEventDispatcher üzerinde save işlemi sırasında event fırlatmamız gereken bir şey varsa bunların sevk edilmesini bu servis ile çalıştırıcaz
         private readonly IDomainEventDispatcher _dispatcher;
 
-        public TaskContext(DbContextOptions<TaskContext> options,
+        public TicketContext(DbContextOptions<TicketContext> options,
        IDomainEventDispatcher dispatcher)
        : base(options)
         {
             _dispatcher = dispatcher;
         }
+
+
+        public DbSet<Ticket> Tickets { get; set; }
 
 
         private void _dispatchDomainEvents()

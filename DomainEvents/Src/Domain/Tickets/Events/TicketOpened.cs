@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DomainEvents.Src.Domain.Task.Events
+namespace DomainEvents.Src.Domain.Tickets.Events
 {
     public class TicketOpened: IDomainEvent
     {

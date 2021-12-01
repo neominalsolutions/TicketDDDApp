@@ -1,12 +1,12 @@
-﻿using DomainEvents.Src.Domain.Task.Events;
-using DomainEvents.Src.Domain.Task.Services;
+﻿using DomainEvents.Src.Domain.Tickets.Events;
+using DomainEvents.Src.Domain.Tickets.Services;
 using DomainEvents.Src.SeedWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DomainEvents.Src.Domain.Task.Entities
+namespace DomainEvents.Src.Domain.Tickets.Entities
 {
     public enum TicketStates
     {
@@ -59,6 +59,8 @@ namespace DomainEvents.Src.Domain.Task.Entities
         /// </summary>
         public int LevelOfPriority { get; private set; }
 
+        private List<TicketState> _ticketStates = new List<TicketState>();
+        public IReadOnlyList<TicketState> States => _ticketStates;
 
 
         public Ticket(string subject, string description, string ownerId)
@@ -124,9 +126,13 @@ namespace DomainEvents.Src.Domain.Task.Entities
             CurrentState = (int)TicketStates.Assigned;
             CurrentDate = DateTime.Now;
 
-            
-          
+            var state = new TicketState(Id, CurrentState, CurrentDate);
+            _ticketStates.Add(state);
 
+            var @event = new TickedAssigned(Id,assignedTo,CurrentDate);
+            AddEvents(@event);
+
+            // Ticket assigned olunca assign olan kişiye mail gider.
         }
 
 
@@ -139,6 +145,9 @@ namespace DomainEvents.Src.Domain.Task.Entities
         {
             CurrentState = (int)TicketStates.Opened;
             CurrentDate = DateTime.Now;
+
+            var state = new TicketState(Id, CurrentState, CurrentDate);
+            _ticketStates.Add(state);
 
             var @event = new TicketOpened(Subject, Description, Id, openedByEmailAddress, CurrentDate, openedByName);
 
@@ -155,24 +164,27 @@ namespace DomainEvents.Src.Domain.Task.Entities
             CurrentState = (int)TicketStates.ReadyForAssignment;
             CurrentDate = DateTime.Now;
 
+            var state = new TicketState(Id, CurrentState, CurrentDate);
+            _ticketStates.Add(state);
+
             var @event = new TicketReadyForAssignment(Id, CurrentDate, TicketStates.ReadyForAssignment);
 
             AddEvents(@event);
         }
 
 
-        public void OpenTicket(string openedByEmailAddress, string openedByName, string managerEmailAddress)
-        {
+        //public void OpenTicket(string openedByEmailAddress, string openedByName, string managerEmailAddress)
+        //{
 
-            CurrentState = (int)TicketStates.Opened;
-            CurrentDate = DateTime.Now;
+        //    CurrentState = (int)TicketStates.Opened;
+        //    CurrentDate = DateTime.Now;
 
-            var @event = new TicketOpened(Subject, Description, Id, openedByEmailAddress, CurrentDate, openedByName,managerEmailAddress);
+        //    var @event = new TicketOpened(Subject, Description, Id, openedByEmailAddress, CurrentDate, openedByName,managerEmailAddress);
 
 
-            AddEvents(@event);
+        //    AddEvents(@event);
 
-        }
+        //}
 
 
 

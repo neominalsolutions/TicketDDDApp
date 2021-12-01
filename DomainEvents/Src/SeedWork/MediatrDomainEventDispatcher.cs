@@ -18,12 +18,12 @@ namespace DomainEvents.Src.SeedWork
             _log = log;
         }
 
-        public async Task Dispatch(IDomainEvent domainEvent)
+        public void  Dispatch(IDomainEvent domainEvent)
         {
 
             var domainEventNotification = _createDomainEventNotification(domainEvent);
             _log.LogDebug("Dispatching Domain Event as MediatR notification.  EventType: {eventType}", domainEvent.GetType());
-            await _mediator.Publish(domainEventNotification);
+             _mediator.Publish(domainEventNotification);
         }
 
         private INotification _createDomainEventNotification(IDomainEvent domainEvent)

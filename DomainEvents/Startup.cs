@@ -1,4 +1,4 @@
-using DomainEvents.Orders;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MediatR;
 using DomainEvents.Src.Domain.Task.Entities;
+using DomainEvents.Src.SeedWork;
+using DomainEvents.Src.EFCore;
 
 namespace DomainEvents
 {
@@ -39,7 +41,7 @@ namespace DomainEvents
             });
 
             services.AddTransient<IDomainEventDispatcher, MediatrDomainEventDispatcher>();
-            services.AddMediatR(typeof(MediatrDomainEventDispatcher).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

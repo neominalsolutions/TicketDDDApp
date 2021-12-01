@@ -12,7 +12,7 @@ namespace DomainEvents.Src.Domain.Task.Events
         public string OwnerName { get; private set; }
         public string TicketNumber { get; private set; }
         public DateTime OpenedDate { get; private set; }
-        public Entities.TicketState State { get; private set; } = Entities.TicketState.Opened;
+        public Entities.TicketStates State { get; private set; } = Entities.TicketStates.Opened;
         public string Subject { get; private set; }
         public string Description { get; private set; }
 

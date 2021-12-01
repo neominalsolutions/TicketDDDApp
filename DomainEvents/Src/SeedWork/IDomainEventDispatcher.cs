@@ -7,6 +7,10 @@ namespace DomainEvents.Src.SeedWork
 {
     public interface IDomainEventDispatcher
     {
-        Task Dispatch(IDomainEvent devent);
+        /// <summary>
+        /// IDomainEvent tipindeki tüm eventleri sevk et
+        /// </summary>
+        /// <param name="devent"></param>
+        void Dispatch(IDomainEvent devent);
     }
 }

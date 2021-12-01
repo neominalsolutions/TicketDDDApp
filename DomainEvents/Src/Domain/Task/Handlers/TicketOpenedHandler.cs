@@ -24,7 +24,7 @@ namespace DomainEvents.Src.Domain.Task.Handlers
             var domainEvent = notification.DomainEvent;
             try
             {
-                _log.LogDebug($"Handling Domain Event. BacklogItemId:  Type:}");
+                _log.LogDebug($"Handling Domain Event. BacklogItemId:  Type:");
               
                 return System.Threading.Tasks.Task.CompletedTask;
             }

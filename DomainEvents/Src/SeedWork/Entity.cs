@@ -13,6 +13,7 @@ namespace DomainEvents.Src.SeedWork
         private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
         public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;
 
+        // sınıfa atadığımız event
         public void AddEvents(IDomainEvent @event)
         {
             _domainEvents.Add(@event);

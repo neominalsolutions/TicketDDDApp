@@ -1,0 +1,63 @@
+﻿@page "/tickets/detail/{id}"
+@model DomainEvents.Pages.Tickets.SetTechDetailModel
+@{
+}
+
+
+@* SEO bazlı url ile sayfalarımız google trarafından indekslenir. ve google arama moturunda yukarıya taşınır. eğer querystring formatını kullanırsak quesrystring parametreleri google trafından indekslenmeyeceği için sayfamız google arama moturunda görünmeyebilir. *@
+
+@* SEO arama motoru optimizasyonu için en önemli ilk ayar 1- User Friendly URL *@
+
+@* {değişkenlik gösterelen parametre değerleri} için {value} tanımlaması yaparız *@
+
+@* @page bir directive sayfaya gelen isteğinin route url tanımlayabiliriz. *@
+
+@* /Tickets/SetTechDetail?id=1&name=deneme querystring format *@
+@* /Tickets/SetTechDetail/1/deneme routing yöntemi *@
+@* sayfa bazlı yönlendirme kuralına route diyoruz. *@
+
+
+
+<div>
+    <p>Subject: @Model.TicketVM.Subject</p>
+    <p>Description: @Model.TicketVM.Description</p>
+    <p>Open Date: @Model.TicketVM.OpenDate</p>
+
+
+    <form method="post">
+
+        <input type="hidden" asp-for="Input.TicketId" value="@Model.Input.TicketId" />
+
+        <p>Difficulty Levels : </p>
+
+        <ul>
+            @foreach (var item in Model.TicketVM.TicketDifficultyLevels)
+            {
+                <li>
+
+                    <input asp-for="Input.LevelOfDifficultyValue" type="radio"  value="@item" />
+                    <span>@item :</span>
+                </li>
+
+            }
+        </ul>
+
+        <p>Priority Levels:</p>
+
+        <ul>
+
+            @foreach (var item in Model.TicketVM.TicketPriorityLevels)
+            {
+            <li>
+
+                <input asp-for="Input.LevelOfPriorityValue" type="radio"  value="@item" />
+                <span>@item :</span>
+            </li>
+             }
+            </ul>
+
+
+        <input type="submit" value="Save" asp-page-handler="Save" />
+    </form>
+
+</div>

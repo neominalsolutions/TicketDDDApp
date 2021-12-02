@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using DomainEvents.Helpers.Selects;
 using DomainEvents.Src.Domain.Tickets.Entities;
 using DomainEvents.Src.Domain.Tickets.Repositories;
 using DomainEvents.Src.Domain.Tickets.Services;
@@ -45,26 +46,7 @@ namespace DomainEvents.Pages.Tickets
         
         public IEnumerable<SelectListItem> Customers { 
             get {
-
-                return new List<SelectListItem> {
-                    new SelectListItem()
-                    {
-                        Text="Berkay",
-                        Value="Berkay"
-                    },
-                    new SelectListItem()
-                    {
-                        Text="Rabia",
-                        Value="Rabia"
-                    },
-                    new SelectListItem()
-                    {
-                        Text="Recep",
-                        Value = "Recep"
-                    }
-
-                    };
-            
+                return SelectHelper.GetItems("Rabia", "Ayþe", "Aslý", "Berkay");
             } } 
 
         public void OnGet()

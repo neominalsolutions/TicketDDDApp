@@ -13,7 +13,7 @@ namespace DomainEvents.Src.Domain.Tickets.Handlers
     {
         public System.Threading.Tasks.Task Handle(DomainEventNotification<TicketReadyForAssignment> notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

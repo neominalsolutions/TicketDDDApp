@@ -15,7 +15,7 @@ namespace DomainEvents.Src.Domain.Tickets.Handlers
 
         public System.Threading.Tasks.Task Handle(DomainEventNotification<TickedAssigned> notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
